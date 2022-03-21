@@ -1,0 +1,82 @@
+body{
+    margin: 0;
+    padding:0;
+
+    height: 100vh;
+    width: 100wh;
+   
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+input, button, textarea{
+    font-family: inherit;
+    font-size: inherit;
+    display: block;
+}
+.wrapper, .wrapper-reader{
+
+width: 100%;
+height: 100%;
+font-size: 20px;
+display: flex;
+flex-direction: column;
+ justify-content: center; 
+ align-items: center;
+
+
+}
+
+textarea{
+    border: black solid 2px;
+
+ height:80%; 
+ width: 50%; 
+ margin-bottom: 20px; 
+
+}
+.start, .cancel, .pause, .back, .continue, .reread{    
+    width: 150px;
+    padding: 10px;
+    margin: auto;
+    margin-top: 10px;
+    background-color:lawngreen;
+    border-radius: 5px;
+    flex-grow: 1;
+}
+
+.hidden{
+    display: none;
+}
+.visible{
+    display: block;
+}
+.word{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    border: 2px solid black;
+    font-size: 18px;
+     width: 50%;
+      
+     align-self: center; 
+}
+.buttons{
+    width: 50%;
+    display: flex;
+    
+    justify-content: center;
+      
+  
+}
+@media screen and (max-width:767 px) {
+    .buttons{
+    width: 100%;
+   
+    flex-wrap: wrap;
+   
+      
+  
+}
+}
+

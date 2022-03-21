@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Fast Reader</title>
+        <link href="css.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div class="wrapper">
+            <textarea
+                class="textarea"
+                name="textarea"
+                placeholder="Enter your text"
+            ></textarea>
+            <button class="start">Start</button>
+            <button class="cancel">Cancel</button>
+        </div>
+        <div class="wrapper-reader hidden">
+            <div class="word"></div>
+            <div class="buttons">
+                <button class="pause">Pause</button>
+                <button class="continue hidden">Continue</button>
+                <button class="reread">Reread</button>
+                <button class="back">Back</button>
+            </div>
+        </div>
+
+        <script src="reader.js"></script>
+    </body>
+</html>
