@@ -8,7 +8,10 @@ const btnReread = document.querySelector(".reread");
 const wrapper = document.querySelector(".wrapper");
 const wrapperReader = document.querySelector(".wrapper-reader");
 const divWord = document.querySelector(".word");
+const showSpeed = document.querySelector("#showSpeed");
+const speed = document.querySelector("#slider");
 let timerId;
+let wordDisplaySpeed;
 
 btnStart.addEventListener("click", onStartClick);
 btnCancel.addEventListener("click", onCancelClick);
@@ -16,6 +19,7 @@ btnPause.addEventListener("click", onPauseClick);
 btnContinue.addEventListener("click", onContinueClick);
 btnReread.addEventListener("click", onRereadClick);
 btnBack.addEventListener("click", onBackClick);
+speed.addEventListener("change", onSpeedChange);
 
 function onStartClick(e) {
     const text = textArea.value;
@@ -75,7 +79,11 @@ function onRereadClick() {
     showPauseButton();
     localStorage.removeItem("index");
    readWholeText();
+}
 
+function onSpeedChange(){
+showSpeed.innerHTML = speed.value;
+wordDisplaySpeed = speed.value;
 }
 
 function readWholeText(){
@@ -84,7 +92,27 @@ function readWholeText(){
      showWord(arrOfText);
 }
 
+function setWordDisplaySpeed(){ 
+        showSpeed.innerHTML = speed.value;
+        wordDisplaySpeed = speed.value;
+        // const showedWord = divWord.textContent;
+        // console.log(showedWord)
+        // const index = localStorage.getItem("index" || {});
+        // const text = localStorage.getItem("textForFastreader");
+
+        // if (!Object.keys("index").length) {
+        //     return;
+        // }
+        // const textToContinue = text.slice(index);
+        // const arrOfTextToContinue = textToContinue.split(" ");
+        // showWord(arrOfTextToContinue);
+        // localStorage.removeItem("index");
+        // showWord(newArr);         
+}
+
+
 function showWord(arrOfText) {
+  setWordDisplaySpeed();
     let i = 0;
     timerId = setInterval(function () {
         if (i > arrOfText.length - 1) {
@@ -99,7 +127,7 @@ function showWord(arrOfText) {
         divWord.innerHTML = current;
 
         i++;
-    }, 250);
+    }, wordDisplaySpeed);
 }
 
 function showPauseButton(){
