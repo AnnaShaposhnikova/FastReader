@@ -11,7 +11,8 @@ const divWord = document.querySelector(".word");
 const showSpeed = document.querySelector("#showSpeed");
 const speed = document.querySelector("#slider");
 let timerId;
-let wordDisplaySpeed;
+let wordDisplaySpeed = 100;
+let indexOfCurrentWord = 0;
 
 btnStart.addEventListener("click", onStartClick);
 btnCancel.addEventListener("click", onCancelClick);
@@ -22,7 +23,7 @@ btnBack.addEventListener("click", onBackClick);
 speed.addEventListener("change", onSpeedChange);
 
 function onStartClick(e) {
-    const text = textArea.value;
+    const text = textArea.value.trim();
     if (!text) {
         return;
     }
@@ -36,39 +37,27 @@ function onStartClick(e) {
 
 function onCancelClick(e) {
     textArea.value = "";
-    const savedText = localStorage.getItem("textForFastreader" || {});
+    const savedText = localStorage.getItem("textForFastreader");
 
     if (Object.keys(savedText).length) {
         localStorage.removeItem("textForFastreader");
     }
-     localStorage.removeItem("index");
+    localStorage.removeItem("index");
 }
 
 function onPauseClick() {
-    const currentWord = divWord.innerHTML;
-    const savedText = localStorage.getItem("textForFastreader");
-    const index = savedText.indexOf(currentWord);
-    localStorage.setItem("index", index);
     clearInterval(timerId);
     btnPause.classList.add("hidden");
     btnContinue.classList.remove("hidden");
 }
 
 function onContinueClick() {
-   showPauseButton();
-    const index = localStorage.getItem("index" || {});
-    const text = localStorage.getItem("textForFastreader");
-
-    if (!Object.keys("index").length) {
-        return;
-    }
-    const textToContinue = text.slice(index);
-    const arrOfTextToContinue = textToContinue.split(" ");
-    showWord(arrOfTextToContinue);
-    localStorage.removeItem("index");
+    showPauseButton();
+    readWholeText();
 }
 
 function onBackClick() {
+    clearInterval(timerId);
     showPauseButton();
     wrapperReader.classList.remove("visible");
     wrapperReader.classList.add("hidden");
@@ -76,61 +65,57 @@ function onBackClick() {
 }
 
 function onRereadClick() {
+    clearInterval(timerId);
     showPauseButton();
     localStorage.removeItem("index");
-   readWholeText();
+    readWholeText();
 }
 
-function onSpeedChange(){
-showSpeed.innerHTML = speed.value;
-wordDisplaySpeed = speed.value;
+function onSpeedChange() {
+    if (btnPause.classList.contains("hidden")) {
+        return;
+    }
+    showSpeed.innerHTML = speed.value;
+    wordDisplaySpeed = speed.value;
+    changeInterval();
+}
+function conversion(wordInMinute) {
+    const interval = 60000 / wordInMinute;
+    console.log(interval);
+    return interval;
 }
 
-function readWholeText(){
-     const savedText = localStorage.getItem("textForFastreader");
-     const arrOfText = savedText.split(" ");
-     showWord(arrOfText);
+function readWholeText() {
+    const savedText = localStorage.getItem("textForFastreader");
+    const arrOfText = savedText.split(" ");
+    showWord(arrOfText);
 }
 
-function setWordDisplaySpeed(){ 
-        showSpeed.innerHTML = speed.value;
-        wordDisplaySpeed = speed.value;
-        // const showedWord = divWord.textContent;
-        // console.log(showedWord)
-        // const index = localStorage.getItem("index" || {});
-        // const text = localStorage.getItem("textForFastreader");
-
-        // if (!Object.keys("index").length) {
-        //     return;
-        // }
-        // const textToContinue = text.slice(index);
-        // const arrOfTextToContinue = textToContinue.split(" ");
-        // showWord(arrOfTextToContinue);
-        // localStorage.removeItem("index");
-        // showWord(newArr);         
+function changeInterval() {
+    clearInterval(timerId);
+    readWholeText();
 }
-
 
 function showWord(arrOfText) {
-  setWordDisplaySpeed();
-    let i = 0;
+    showSpeed.innerHTML = wordDisplaySpeed;
+
     timerId = setInterval(function () {
-        if (i > arrOfText.length - 1) {
+        if (indexOfCurrentWord > arrOfText.length - 1) {
             return;
         }
 
-        let current = arrOfText[i];
+        let current = arrOfText[indexOfCurrentWord];
         if (arrOfText.indexOf(current) === arrOfText[length - 1]) {
             clearInterval(timerId);
         }
 
         divWord.innerHTML = current;
 
-        i++;
-    }, wordDisplaySpeed);
+        indexOfCurrentWord++;
+    }, conversion(speed.value));
 }
 
-function showPauseButton(){
-     btnPause.classList.remove("hidden");
-     btnContinue.classList.add("hidden");
+function showPauseButton() {
+    btnPause.classList.remove("hidden");
+    btnContinue.classList.add("hidden");
 }
